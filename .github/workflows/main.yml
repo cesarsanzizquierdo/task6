@@ -14,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js (optional)
+      - name: Set up Node.js (opcional)
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -28,10 +28,14 @@ jobs:
           google-chrome --headless --disable-gpu --no-sandbox --dump-dom test.html > result.html
           cat result.html | grep PASSED || true
 
+      - name: Setup Git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Deploy paginaWeb.html to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
           publish_branch: gh-pages
-          keep_files: true
