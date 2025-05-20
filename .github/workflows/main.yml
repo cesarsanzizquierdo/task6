@@ -19,14 +19,14 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Run test.html with headless Chromium in Xvfb
-        uses: coactions/setup-xvfb@v1
-        with:
-          run: |
-            sudo apt-get update
-            sudo apt-get install -y chromium-browser
-            chromium-browser --headless --disable-gpu --no-sandbox --dump-dom test.html > result.html
-            cat result.html | grep PASSED || true
+      - name: Run test.html with headless Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget unzip
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+          google-chrome --headless --disable-gpu --no-sandbox --dump-dom test.html > result.html
+          cat result.html | grep PASSED || true
 
       - name: Deploy paginaWeb.html to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
